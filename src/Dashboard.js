@@ -37,11 +37,25 @@ export default function Dashboard() {
   ];
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'Georgia, serif', backgroundColor: '#f4f4f0', color: '#2e2e2e' }}>
+    <div style={{
+      padding: '2rem',
+      fontFamily: 'Georgia, serif',
+      backgroundColor: '#f4f4f0',
+      color: '#2e2e2e',
+      maxWidth: '1000px',
+      margin: '0 auto'
+    }}>
+      <img
+        src="/upon-my-death-logo.png"
+        alt="Upon My Death logo"
+        style={{ width: '150px', marginBottom: '1rem' }}
+      />
+
       <h1 style={{ fontSize: '2.5rem', color: '#4a4a4a' }}>Upon My Death</h1>
       <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
         The peace of leaving nothing unsaid. A simple, secure way to create your will, document your funeral wishes, and leave lasting messages for those you love.
       </p>
+
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
         {options.map((opt, index) => (
           <div
@@ -76,7 +90,9 @@ export default function Dashboard() {
               <textarea placeholder="Beneficiaries (who should receive what)" rows="4" />
               <textarea placeholder="Funeral and burial wishes" rows="3" />
               <textarea placeholder="Any final messages or instructions" rows="3" />
-              <button type="submit">Generate My Will</button>
+              <button type="submit" style={{ backgroundColor: '#4a4a4a', color: '#fff', padding: '0.5rem', border: 'none', borderRadius: '4px' }}>
+                Generate My Will
+              </button>
             </form>
           </div>
         )}
