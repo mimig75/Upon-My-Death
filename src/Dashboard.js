@@ -102,4 +102,53 @@ export default function Dashboard() {
             <ul>
               <li>List online accounts and passwords</li>
               <li>Instructions for social media (memorialise/delete)</li>
-              <li>Where to
+              <li>Where to find cloud-stored files and photos</li>
+              <li>Websites or domain names you own</li>
+            </ul>
+          </div>
+        )}
+
+        {selectedOption === 'funeral' && (
+          <div>
+            <h2>Your Funeral Wishes</h2>
+            <ul>
+              <li>Type of funeral (traditional, celebration of life, etc.)</li>
+              <li>Location, music, readings, dress code</li>
+              <li>Who should be informed or involved</li>
+              <li>Obituary template</li>
+              <li>Preferred charities for donations</li>
+            </ul>
+          </div>
+        )}
+
+        {selectedOption === 'letter' && (
+          <div>
+            <h2>Write a Letter</h2>
+            <input placeholder="To (name)" /><br />
+            <textarea placeholder="Your message..." rows="5" cols="50" /><br />
+            <input type="file" />
+          </div>
+        )}
+
+        {selectedOption === 'other' && (
+          <div>
+            <h2>Other Considerations</h2>
+            <ul>
+              <li>Pet care instructions</li>
+              <li>Guardianship info for children</li>
+              <li>Safe deposit box access</li>
+              <li>Preferred executor or contact</li>
+              <li>Medical history for family</li>
+              <li>Time-release messages</li>
+              <li>Legacy timeline or scrapbook</li>
+              <li>Checklist for next of kin</li>
+              <li>Emergency contact system</li>
+              <li>Verification system for document release</li>
+              <li>Encryption and data security notes</li>
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
