@@ -1,4 +1,3 @@
-/* Import Tailwind's base styles */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,41 +5,9 @@
 /* Custom base styles */
 body {
   font-family: 'Lato', sans-serif;
-  background-color: #f9fafb; /* Light grey background */
-  color: #1f2937; /* Slate-800 from Tailwind */
+  background-color: #f9fafb;
+  color: #1f2937;
   line-height: 1.6;
   margin: 0;
   padding: 0;
-}
-
-/* Optional: Improve heading appearance */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: #111827; /* Tailwind slate-900 */
-}
-
-/* Links */
-a {
-  color: #2563eb; /* Tailwind blue-600 */
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Buttons */
-button {
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #1d4ed8; /* Darker blue */
 }
