@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import './index.css';
 
 export default function Dashboard() {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [willType, setWillType] = useState(null);
 
   const options = [
     {
@@ -37,134 +39,151 @@ export default function Dashboard() {
   ];
 
   return (
-    <div style={{
-      padding: '2rem',
-      fontFamily: 'Georgia, serif',
-      backgroundColor: '#f4f4f0',
-      color: '#2e2e2e',
-      maxWidth: '1000px',
-      margin: '0 auto'
-    }}>
+    <div className="min-h-screen p-8 font-sans bg-offwhite text-charcoal max-w-5xl mx-auto">
       <img
         src="/upon-my-death-logo.png"
         alt="Upon My Death logo"
-        style={{ width: '150px', marginBottom: '1rem' }}
+        className="w-40 mb-6"
       />
 
-      <h1 style={{ fontSize: '2.5rem', color: '#4a4a4a' }}>Upon My Death</h1>
-      <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
+      <h1 className="text-4xl font-semibold mb-4">Upon My Death</h1>
+      <p className="text-lg mb-10">
         The peace of leaving nothing unsaid. A simple, secure way to create your will, document your funeral wishes, and leave lasting messages for those you love.
       </p>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+      <div className="flex flex-wrap gap-4">
         {options.map((opt, index) => (
           <div
             key={index}
             onClick={opt.action}
-            style={{
-              border: '1px solid #ccc',
-              padding: '1rem',
-              width: '300px',
-              backgroundColor: '#fff',
-              cursor: 'pointer',
-              borderRadius: '8px'
-            }}
+            className="border border-gray-300 p-4 w-72 bg-white cursor-pointer rounded-lg shadow-md hover:shadow-lg transition"
           >
-            <h2 style={{ color: '#2e2e2e' }}>{opt.title}</h2>
-            <p>{opt.description}</p>
+            <h2 className="text-xl font-medium">{opt.title}</h2>
+            <p className="text-sm mt-2">{opt.description}</p>
           </div>
         ))}
       </div>
 
-      <div style={{ marginTop: '2rem' }}>
+      <div className="mt-10">
         {selectedOption === 'will' && (
           <div>
-            <h2>Create Your Will</h2>
-            <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '600px' }}>
-              <input placeholder="Full name" required />
-              <input placeholder="Date of birth" required type="date" />
-              <input placeholder="Current address" required />
-              <input placeholder="Names of spouse/partner/children" />
-              <input placeholder="Name of executor (person who manages your will)" required />
-              <textarea placeholder="List of assets (property, accounts, valuables)" rows="4" />
-              <textarea placeholder="Beneficiaries (who should receive what)" rows="4" />
-              <textarea placeholder="Funeral and burial wishes" rows="3" />
-              <textarea placeholder="Any final messages or instructions" rows="3" />
-              <button type="submit" style={{ backgroundColor: '#4a4a4a', color: '#fff', padding: '0.5rem', border: 'none', borderRadius: '4px' }}>
-                Generate My Will
+            <h2 className="text-2xl font-semibold text-teal mb-4">Choose Your Will Type</h2>
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <button
+                onClick={() => setWillType('physical')}
+                className={`border p-4 rounded-lg w-full sm:w-1/2 text-left ${willType === 'physical' ? 'border-teal bg-white shadow-md' : 'border-gray-300 bg-gray-50'}`}
+              >
+                <h3 className="text-lg font-semibold mb-2">Option A: Physical Will</h3>
+                <p className="text-sm">Create a will for physical signing. Valid under UK law (as of May 17, 2025).</p>
               </button>
-            </form>
+              <button
+                onClick={() => setWillType('digital')}
+                className={`border p-4 rounded-lg w-full sm:w-1/2 text-left ${willType === 'digital' ? 'border-teal bg-white shadow-md' : 'border-gray-300 bg-gray-50'}`}
+              >
+                <h3 className="text-lg font-semibold mb-2">Option B: Future Digital Will</h3>
+                <p className="text-sm">Draft a digital version. <strong className="text-red-600">Not yet legally recognised in the UK.</strong></p>
+              </button>
+            </div>
+
+            {willType === 'physical' && (
+              <div>
+                <p className="text-sm mb-4 text-red-600 font-medium">
+                  Important: Only printed and signed wills are legally valid in the UK as of May 17, 2025.
+                </p>
+                <form className="flex flex-col gap-4 max-w-xl">
+                  <input placeholder="Full name" required className="input" />
+                  <input placeholder="Date of birth" required type="date" className="input" />
+                  <input placeholder="Current address" required className="input" />
+                  <input placeholder="Names of spouse/partner/children" className="input" />
+                  <input placeholder="Name of executor (person who manages your will)" required className="input" />
+                  <textarea placeholder="List of assets (property, accounts, valuables)" rows="4" className="input" />
+                  <textarea placeholder="Beneficiaries (who should receive what)" rows="4" className="input" />
+                  <textarea placeholder="Funeral and burial wishes" rows="3" className="input" />
+                  <textarea placeholder="Any final messages or instructions" rows="3" className="input" />
+                  <button type="submit" className="bg-teal text-white py-2 rounded hover:bg-[#359991]">
+                    Generate My Will
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {willType === 'digital' && (
+              <div className="border border-red-400 bg-red-50 text-red-700 p-4 rounded mb-4">
+                <p><strong>Important:</strong> Digital wills are <u>not yet legally recognised in the UK</u> (as of May 17, 2025). This feature is offered to help you prepare for future legislation and to store your wishes securely.</p>
+              </div>
+            )}
           </div>
         )}
 
         {selectedOption === 'legal' && (
-          <div>
-            <h2>Legal & Financial Documents</h2>
-            <ul>
-              <li>Power of Attorney (POA) documents</li>
-              <li>Trusts or estate plans</li>
-              <li>Pension and life insurance details</li>
-              <li>Bank accounts, investments, cryptocurrency</li>
-              <li>Debts and outstanding obligations</li>
-              <li>Property deeds / mortgage documents</li>
-              <li>Business succession documents</li>
-            </ul>
-          </div>
+          <Section title="Legal & Financial Documents" items={[
+            'Power of Attorney (POA) documents',
+            'Trusts or estate plans',
+            'Pension and life insurance details',
+            'Bank accounts, investments, cryptocurrency',
+            'Debts and outstanding obligations',
+            'Property deeds / mortgage documents',
+            'Business succession documents'
+          ]} />
         )}
 
         {selectedOption === 'digital' && (
-          <div>
-            <h2>Digital Legacy</h2>
-            <ul>
-              <li>List online accounts and passwords</li>
-              <li>Instructions for social media (memorialise/delete)</li>
-              <li>Where to find cloud-stored files and photos</li>
-              <li>Websites or domain names you own</li>
-            </ul>
-          </div>
+          <Section title="Digital Legacy" items={[
+            'List online accounts and passwords',
+            'Instructions for social media (memorialise/delete)',
+            'Where to find cloud-stored files and photos',
+            'Websites or domain names you own'
+          ]} />
         )}
 
         {selectedOption === 'funeral' && (
-          <div>
-            <h2>Your Funeral Wishes</h2>
-            <ul>
-              <li>Type of funeral (traditional, celebration of life, etc.)</li>
-              <li>Location, music, readings, dress code</li>
-              <li>Who should be informed or involved</li>
-              <li>Obituary template</li>
-              <li>Preferred charities for donations</li>
-            </ul>
-          </div>
+          <Section title="Your Funeral Wishes" items={[
+            'Type of funeral (traditional, celebration of life, etc.)',
+            'Location, music, readings, dress code',
+            'Who should be informed or involved',
+            'Obituary template',
+            'Preferred charities for donations'
+          ]} />
         )}
 
         {selectedOption === 'letter' && (
           <div>
-            <h2>Write a Letter</h2>
-            <input placeholder="To (name)" /><br />
-            <textarea placeholder="Your message..." rows="5" cols="50" /><br />
-            <input type="file" />
+            <h2 className="text-2xl font-semibold mb-4">Write a Letter</h2>
+            <input placeholder="To (name)" className="input" /><br />
+            <textarea placeholder="Your message..." rows="5" className="input" /><br />
+            <input type="file" className="input" />
           </div>
         )}
 
         {selectedOption === 'other' && (
-          <div>
-            <h2>Other Considerations</h2>
-            <ul>
-              <li>Pet care instructions</li>
-              <li>Guardianship info for children</li>
-              <li>Safe deposit box access</li>
-              <li>Preferred executor or contact</li>
-              <li>Medical history for family</li>
-              <li>Time-release messages</li>
-              <li>Legacy timeline or scrapbook</li>
-              <li>Checklist for next of kin</li>
-              <li>Emergency contact system</li>
-              <li>Verification system for document release</li>
-              <li>Encryption and data security notes</li>
-            </ul>
-          </div>
+          <Section title="Other Considerations" items={[
+            'Pet care instructions',
+            'Guardianship info for children',
+            'Safe deposit box access',
+            'Preferred executor or contact',
+            'Medical history for family',
+            'Time-release messages',
+            'Legacy timeline or scrapbook',
+            'Checklist for next of kin',
+            'Emergency contact system',
+            'Verification system for document release',
+            'Encryption and data security notes'
+          ]} />
         )}
       </div>
+    </div>
+  );
+}
+
+function Section({ title, items }) {
+  return (
+    <div>
+      <h2 className="text-2xl font-semibold mb-4 text-teal">{title}</h2>
+      <ul className="list-disc pl-5 space-y-2">
+        {items.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Dashboard from './Dashboard';
-import './index.css';
+import './index.css'; // Correct way to include CSS
 
 function App() {
   return <Dashboard />;
