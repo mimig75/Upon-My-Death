@@ -4,6 +4,7 @@ import './index.css';
 export default function Dashboard() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [willType, setWillType] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(null);
 
   const options = [
     {
@@ -37,6 +38,11 @@ export default function Dashboard() {
       action: () => setSelectedOption('other')
     }
   ];
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setUploadedFile(file);
+  };
 
   return (
     <div className="min-h-screen p-8 font-sans bg-offwhite text-charcoal max-w-5xl mx-auto">
@@ -74,17 +80,24 @@ export default function Dashboard() {
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <button
                 onClick={() => setWillType('physical')}
-                className={`border p-4 rounded-lg w-full sm:w-1/2 text-left ${willType === 'physical' ? 'border-teal bg-white shadow-md' : 'border-gray-300 bg-gray-50'}`}
+                className={`border p-4 rounded-lg w-full sm:w-1/3 text-left ${willType === 'physical' ? 'border-teal bg-white shadow-md' : 'border-gray-300 bg-gray-50'}`}
               >
                 <h3 className="text-lg font-semibold mb-2">Option A: Physical Will</h3>
                 <p className="text-sm">Create a will for physical signing. Valid under UK law (as of May 17, 2025).</p>
               </button>
               <button
                 onClick={() => setWillType('digital')}
-                className={`border p-4 rounded-lg w-full sm:w-1/2 text-left ${willType === 'digital' ? 'border-teal bg-white shadow-md' : 'border-gray-300 bg-gray-50'}`}
+                className={`border p-4 rounded-lg w-full sm:w-1/3 text-left ${willType === 'digital' ? 'border-teal bg-white shadow-md' : 'border-gray-300 bg-gray-50'}`}
               >
                 <h3 className="text-lg font-semibold mb-2">Option B: Future Digital Will</h3>
                 <p className="text-sm">Draft a digital version. <strong className="text-red-600">Not yet legally recognised in the UK.</strong></p>
+              </button>
+              <button
+                onClick={() => setWillType('upload')}
+                className={`border p-4 rounded-lg w-full sm:w-1/3 text-left ${willType === 'upload' ? 'border-teal bg-white shadow-md' : 'border-gray-300 bg-gray-50'}`}
+              >
+                <h3 className="text-lg font-semibold mb-2">Option C: Upload Existing Will</h3>
+                <p className="text-sm">Upload a scan, photo, or PDF of an existing legally signed will.</p>
               </button>
             </div>
 
@@ -113,6 +126,14 @@ export default function Dashboard() {
             {willType === 'digital' && (
               <div className="border border-red-400 bg-red-50 text-red-700 p-4 rounded mb-4">
                 <p><strong>Important:</strong> Digital wills are <u>not yet legally recognised in the UK</u> (as of May 17, 2025). This feature is offered to help you prepare for future legislation and to store your wishes securely.</p>
+              </div>
+            )}
+
+            {willType === 'upload' && (
+              <div className="border border-gray-300 bg-white p-4 rounded shadow">
+                <p className="mb-2">Please upload your signed will (PDF, JPG, or PNG formats only):</p>
+                <input type="file" accept=".pdf,.png,.jpg,.jpeg" onChange={handleFileChange} className="input mb-2" />
+                {uploadedFile && <p className="text-sm text-green-700">Uploaded: {uploadedFile.name}</p>}
               </div>
             )}
           </div>
