@@ -5,23 +5,8 @@ export default function Dashboard() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [willType, setWillType] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [funeralType, setFuneralType] = useState(null);
   const [letters, setLetters] = useState([{ to: '', message: '', file: null, email: '', phone: '', deliveryDate: '' }]);
   const [legalDocs, setLegalDocs] = useState({});
-  const [funeralPlan, setFuneralPlan] = useState({
-    type: '',
-    location: '',
-    music: '',
-    readings: '',
-    dressCode: '',
-    arranger: '',
-    parlour: '',
-    people: '',
-    charities: '',
-    cremationBurial: '',
-    ashesLocation: '',
-    wakeDetails: ''
-  });
 
   const legalSections = [
     'Power of Attorney (POA) documents',
@@ -130,6 +115,46 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
+          </div>
+        )}
+
+        {selectedOption === 'letter' && (
+          <div className="mt-6">
+            <h2 className="text-2xl font-semibold mb-4 text-teal">Letters to Loved Ones</h2>
+            {letters.map((letter, idx) => (
+              <div key={idx} className="mb-4 border p-4 rounded bg-white shadow-sm">
+                <input className="block w-full border p-2 mb-2 rounded" placeholder="To (name)" value={letter.to} onChange={e => updateLetter(idx, 'to', e.target.value)} />
+                <textarea className="block w-full border p-2 mb-2 rounded" rows="3" placeholder="Your message..." value={letter.message} onChange={e => updateLetter(idx, 'message', e.target.value)}></textarea>
+                <input className="block w-full border p-2 mb-2 rounded" type="file" onChange={e => updateLetter(idx, 'file', e.target.files[0])} />
+                <input className="block w-full border p-2 mb-2 rounded" type="email" placeholder="Recipient's Email (optional)" value={letter.email} onChange={e => updateLetter(idx, 'email', e.target.value)} />
+                <input className="block w-full border p-2 mb-2 rounded" type="tel" placeholder="Phone number (optional)" value={letter.phone} onChange={e => updateLetter(idx, 'phone', e.target.value)} />
+                <input className="block w-full border p-2 mb-2 rounded" type="date" placeholder="Delivery Date" value={letter.deliveryDate} onChange={e => updateLetter(idx, 'deliveryDate', e.target.value)} />
+              </div>
+            ))}
+            {letters.length < 10 && <button className="mt-2 px-4 py-2 bg-teal text-white rounded" onClick={addLetter}>Add Another Letter</button>}
+          </div>
+        )}
+
+        {selectedOption === 'legal' && (
+          <div className="mt-6">
+            <h2 className="text-2xl font-semibold mb-4 text-teal">Legal & Financial Documents</h2>
+            {legalSections.map((section, index) => (
+              <div key={index} className="mb-6">
+                <h3 className="text-lg font-semibold mb-2">{section}</h3>
+                <textarea
+                  className="block w-full border p-2 mb-2 rounded"
+                  placeholder={`Notes about ${section.toLowerCase()}...`}
+                  value={legalDocs[section]?.notes || ''}
+                  onChange={e => handleLegalTextChange(section, e.target.value)}
+                  rows={3}
+                ></textarea>
+                <input
+                  className="block w-full border p-2 rounded"
+                  type="file"
+                  onChange={e => handleLegalFileChange(section, e.target.files[0])}
+                />
+              </div>
+            ))}
           </div>
         )}
       </div>
