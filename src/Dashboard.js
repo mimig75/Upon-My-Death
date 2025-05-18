@@ -53,14 +53,26 @@ export default function Dashboard() {
     });
   };
 
+  const updateLetter = (index, field, value) => {
+    const updated = [...letters];
+    updated[index][field] = value;
+    setLetters(updated);
+  };
+
+  const addLetter = () => {
+    if (letters.length < 10) {
+      setLetters([...letters, { to: '', message: '', file: null, email: '', phone: '', deliveryDate: '' }]);
+    }
+  };
+
   return (
     <div className="min-h-screen p-8 font-sans bg-offwhite text-charcoal max-w-5xl mx-auto">
       <div className="flex flex-col items-center mb-8">
-        <img src="/upon-my-death-logo.png" alt="Logo" className="w-28 mb-2" />
+        <img src="/upon-my-death-logo.png" alt="Logo" className="w-36 mb-2" />
         <p className="text-lg font-medium">Upon My Death</p>
       </div>
 
-      <div className="flex flex-wrap gap-4 mb-10">
+      <div className="flex flex-wrap gap-6 mb-10 justify-center">
         {[
           { title: 'Create My Will', key: 'will' },
           { title: 'Legal & Financial Documents', key: 'legal' },
@@ -72,9 +84,16 @@ export default function Dashboard() {
           <div
             key={idx}
             onClick={() => setSelectedOption(opt.key)}
-            className="border border-gray-300 p-4 w-72 bg-white cursor-pointer rounded-lg shadow-md hover:shadow-lg"
+            className="border border-gray-300 p-6 w-80 bg-white cursor-pointer rounded-lg shadow-md hover:shadow-lg text-center"
           >
-            <h2 className="text-xl font-medium">{opt.title}</h2>
+            <h2 className="text-xl font-semibold mb-2">{opt.title}</h2>
+            <p className="text-sm text-gray-600">{opt.title === 'Create My Will' && 'Answer a few simple questions to generate a legally sound will.'}
+              {opt.title === 'Legal & Financial Documents' && 'Securely upload or record information about your legal and financial affairs.'}
+              {opt.title === 'Digital Legacy' && 'List and manage your digital accounts and online presence.'}
+              {opt.title === 'Funeral Wishes' && 'Detail your preferences to help loved ones carry out your final wishes.'}
+              {opt.title === 'Letters to Loved Ones' && 'Write or upload heartfelt letters to be shared after your passing.'}
+              {opt.title === 'Other Considerations' && 'Include pet care, guardianship info, and other important instructions.'}
+            </p>
           </div>
         ))}
       </div>
@@ -106,6 +125,48 @@ export default function Dashboard() {
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {selectedOption === 'letter' && (
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Letters to Loved Ones</h2>
+            <p className="text-sm mb-4">Write or upload up to 10 letters. You can include delivery instructions.</p>
+            <div className="space-y-6">
+              {letters.map((letter, index) => (
+                <div key={index} className="bg-white p-4 rounded shadow-md">
+                  <input className="input mb-2" placeholder="To (name)" value={letter.to} onChange={(e) => updateLetter(index, 'to', e.target.value)} />
+                  <textarea className="input mb-2" placeholder="Your message..." rows={4} value={letter.message} onChange={(e) => updateLetter(index, 'message', e.target.value)} />
+                  <input type="file" className="input mb-2" onChange={(e) => updateLetter(index, 'file', e.target.files[0])} />
+                  <input className="input mb-2" placeholder="Recipient email" value={letter.email} onChange={(e) => updateLetter(index, 'email', e.target.value)} />
+                  <input className="input mb-2" placeholder="Recipient phone number (optional)" value={letter.phone} onChange={(e) => updateLetter(index, 'phone', e.target.value)} />
+                  <input type="date" className="input mb-2" value={letter.deliveryDate} onChange={(e) => updateLetter(index, 'deliveryDate', e.target.value)} />
+                </div>
+              ))}
+              {letters.length < 10 && (
+                <button onClick={addLetter} className="bg-teal text-white px-4 py-2 rounded shadow">+ Add Another Letter</button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {selectedOption === 'will' && (
+          <div>
+            <h2 className="text-2xl font-semibold mb-4 text-teal">Choose Your Will Type</h2>
+            <div className="flex flex-col md:flex-row gap-4">
+              <div onClick={() => setWillType('physical')} className={`border p-4 rounded-lg cursor-pointer w-full md:w-1/3 ${willType === 'physical' ? 'border-teal bg-white shadow-md' : 'bg-gray-100'}`}>
+                <h3 className="font-semibold">Option A: Physical Will</h3>
+                <p className="text-sm">Create a will for physical signing. Valid under UK law (as of May 17, 2025).</p>
+              </div>
+              <div onClick={() => setWillType('digital')} className={`border p-4 rounded-lg cursor-pointer w-full md:w-1/3 ${willType === 'digital' ? 'border-teal bg-white shadow-md' : 'bg-gray-100'}`}>
+                <h3 className="font-semibold">Option B: Future Digital Will</h3>
+                <p className="text-sm text-red-600">Draft a digital version. <strong>Not yet legally recognised in the UK.</strong></p>
+              </div>
+              <div onClick={() => setWillType('upload')} className={`border p-4 rounded-lg cursor-pointer w-full md:w-1/3 ${willType === 'upload' ? 'border-teal bg-white shadow-md' : 'bg-gray-100'}`}>
+                <h3 className="font-semibold">Option C: Upload Existing Will</h3>
+                <p className="text-sm">Upload a scan, photo, or PDF of an existing legally signed will.</p>
+              </div>
             </div>
           </div>
         )}
