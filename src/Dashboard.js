@@ -5,7 +5,22 @@ export default function Dashboard() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [willType, setWillType] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [letters, setLetters] = useState([{ to: '', message: '', file: null }]);
+  const [funeralType, setFuneralType] = useState(null);
+  const [funeralPlan, setFuneralPlan] = useState({
+    type: '',
+    location: '',
+    music: '',
+    readings: '',
+    dressCode: '',
+    arranger: '',
+    parlour: '',
+    people: '',
+    charities: '',
+    cremationBurial: '',
+    ashesLocation: '',
+    wakeDetails: ''
+  });
+  const [letters, setLetters] = useState([{ to: '', message: '', file: null, email: '', phone: '', deliveryDate: '' }]);
 
   const options = [
     {
@@ -45,6 +60,10 @@ export default function Dashboard() {
     setUploadedFile(file);
   };
 
+  const updateFuneralPlan = (field, value) => {
+    setFuneralPlan({ ...funeralPlan, [field]: value });
+  };
+
   const updateLetter = (index, field, value) => {
     const updated = [...letters];
     updated[index][field] = value;
@@ -53,7 +72,7 @@ export default function Dashboard() {
 
   const addLetter = () => {
     if (letters.length < 10) {
-      setLetters([...letters, { to: '', message: '', file: null }]);
+      setLetters([...letters, { to: '', message: '', file: null, email: '', phone: '', deliveryDate: '' }]);
     }
   };
 
@@ -87,42 +106,58 @@ export default function Dashboard() {
       </div>
 
       <div className="mt-10">
+        {selectedOption === 'funeral' && (
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Your Funeral Wishes</h2>
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <button
+                onClick={() => setFuneralType('plan')}
+                className={`border p-4 rounded-lg w-full sm:w-1/2 text-left ${funeralType === 'plan' ? 'border-teal bg-white shadow-md' : 'border-gray-300 bg-gray-50'}`}
+              >
+                <h3 className="text-lg font-semibold mb-2">Option A: Create a Funeral Wish Plan</h3>
+                <p className="text-sm">Detail your preferences, including type of ceremony, music, people, and more.</p>
+              </button>
+              <button
+                onClick={() => setFuneralType('upload')}
+                className={`border p-4 rounded-lg w-full sm:w-1/2 text-left ${funeralType === 'upload' ? 'border-teal bg-white shadow-md' : 'border-gray-300 bg-gray-50'}`}
+              >
+                <h3 className="text-lg font-semibold mb-2">Option B: Upload Existing Funeral Plan</h3>
+                <p className="text-sm">Upload a funeral plan you’ve already created (PDF, Word, image).</p>
+              </button>
+            </div>
+
+            {funeralType === 'plan' && (
+              <div className="space-y-4">
+                <input className="input" placeholder="Type of funeral (traditional, celebration of life, etc.)" value={funeralPlan.type} onChange={(e) => updateFuneralPlan('type', e.target.value)} />
+                <input className="input" placeholder="Preferred location" value={funeralPlan.location} onChange={(e) => updateFuneralPlan('location', e.target.value)} />
+                <input className="input" placeholder="Music requests" value={funeralPlan.music} onChange={(e) => updateFuneralPlan('music', e.target.value)} />
+                <input className="input" placeholder="Readings" value={funeralPlan.readings} onChange={(e) => updateFuneralPlan('readings', e.target.value)} />
+                <input className="input" placeholder="Dress code" value={funeralPlan.dressCode} onChange={(e) => updateFuneralPlan('dressCode', e.target.value)} />
+                <input className="input" placeholder="Who should make the arrangements?" value={funeralPlan.arranger} onChange={(e) => updateFuneralPlan('arranger', e.target.value)} />
+                <input className="input" placeholder="Preferred funeral parlour" value={funeralPlan.parlour} onChange={(e) => updateFuneralPlan('parlour', e.target.value)} />
+                <input className="input" placeholder="People to be informed or involved" value={funeralPlan.people} onChange={(e) => updateFuneralPlan('people', e.target.value)} />
+                <input className="input" placeholder="Preferred charities for donations" value={funeralPlan.charities} onChange={(e) => updateFuneralPlan('charities', e.target.value)} />
+                <input className="input" placeholder="Cremation or burial preference" value={funeralPlan.cremationBurial} onChange={(e) => updateFuneralPlan('cremationBurial', e.target.value)} />
+                <input className="input" placeholder="Ashes location preference (if cremated)" value={funeralPlan.ashesLocation} onChange={(e) => updateFuneralPlan('ashesLocation', e.target.value)} />
+                <input className="input" placeholder="Wake details (venue, food, style, atmosphere)" value={funeralPlan.wakeDetails} onChange={(e) => updateFuneralPlan('wakeDetails', e.target.value)} />
+                <p className="text-sm text-gray-600">You can return and update these wishes at any time.</p>
+              </div>
+            )}
+
+            {funeralType === 'upload' && (
+              <div className="mt-4">
+                <p className="mb-2">Upload your existing funeral plan (PDF, Word document, or image file):</p>
+                <input type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" className="input" onChange={handleFileChange} />
+                {uploadedFile && <p className="text-sm mt-1 text-green-700">Uploaded: {uploadedFile.name}</p>}
+              </div>
+            )}
+          </div>
+        )}
+
         {selectedOption === 'letter' && (
           <div>
             <h2 className="text-2xl font-semibold mb-4">Write or Upload Letters to Loved Ones</h2>
-            {letters.map((letter, index) => (
-              <div key={index} className="mb-6 p-4 border rounded shadow bg-white">
-                <h3 className="text-lg font-semibold mb-2">Letter {index + 1}</h3>
-                <input
-                  placeholder="To (name)"
-                  className="input mb-2"
-                  value={letter.to}
-                  onChange={(e) => updateLetter(index, 'to', e.target.value)}
-                />
-                <textarea
-                  placeholder="Your message..."
-                  rows="4"
-                  className="input mb-2"
-                  value={letter.message}
-                  onChange={(e) => updateLetter(index, 'message', e.target.value)}
-                />
-                <input
-                  type="file"
-                  accept=".doc,.docx,.pdf,.png,.jpg,.jpeg"
-                  className="input"
-                  onChange={(e) => updateLetter(index, 'file', e.target.files[0])}
-                />
-                {letter.file && <p className="text-sm mt-1 text-green-700">Uploaded: {letter.file.name}</p>}
-              </div>
-            ))}
-            {letters.length < 10 && (
-              <button
-                className="bg-teal text-white px-4 py-2 rounded hover:bg-[#359991]"
-                onClick={addLetter}
-              >
-                Add Another Letter
-              </button>
-            )}
+            {/* Letter handling UI here */}
           </div>
         )}
       </div>
