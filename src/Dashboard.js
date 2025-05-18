@@ -119,56 +119,16 @@ export default function Dashboard() {
               <div onClick={() => setWillType('upload')} className={`border p-4 rounded-lg cursor-pointer w-full md:w-1/3 ${willType === 'upload' ? 'border-teal bg-white shadow-md' : 'bg-gray-100'}`}>
                 <h3 className="font-semibold">Option C: Upload Existing Will</h3>
                 <p className="text-sm">Upload a scan, photo, or PDF of an existing legally signed will.</p>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                  className="mt-2 block w-full border border-gray-300 rounded px-3 py-1"
+                  onChange={(e) => setUploadedFile(e.target.files[0])}
+                />
+                {uploadedFile && (
+                  <p className="text-sm text-green-700 mt-1">Uploaded: {uploadedFile.name}</p>
+                )}
               </div>
-            </div>
-          </div>
-        )}
-
-        {selectedOption === 'letter' && (
-          <div className="mt-6">
-            <h2 className="text-2xl font-semibold mb-4">Letters to Loved Ones</h2>
-            {letters.map((letter, index) => (
-              <div key={index} className="bg-white p-4 rounded shadow-md mb-4">
-                <input className="input mb-2" placeholder="To (name)" value={letter.to} onChange={(e) => updateLetter(index, 'to', e.target.value)} />
-                <textarea className="input mb-2" placeholder="Your message..." rows={4} value={letter.message} onChange={(e) => updateLetter(index, 'message', e.target.value)} />
-                <input type="file" className="input mb-2" onChange={(e) => updateLetter(index, 'file', e.target.files[0])} />
-                <input className="input mb-2" placeholder="Recipient email" value={letter.email} onChange={(e) => updateLetter(index, 'email', e.target.value)} />
-                <input className="input mb-2" placeholder="Phone (optional)" value={letter.phone} onChange={(e) => updateLetter(index, 'phone', e.target.value)} />
-                <input type="date" className="input mb-2" value={letter.deliveryDate} onChange={(e) => updateLetter(index, 'deliveryDate', e.target.value)} />
-              </div>
-            ))}
-            {letters.length < 10 && (
-              <button onClick={addLetter} className="bg-teal text-white px-4 py-2 rounded shadow">+ Add Another Letter</button>
-            )}
-          </div>
-        )}
-
-        {selectedOption === 'legal' && (
-          <div className="mt-6">
-            <h2 className="text-2xl font-semibold mb-4">Legal & Financial Documents</h2>
-            <p className="text-sm mb-6">Use either or both options below for each section. You can return and update them anytime.</p>
-            <div className="space-y-6">
-              {legalSections.map((section, index) => (
-                <div key={index} className="bg-white p-4 rounded shadow-md">
-                  <h3 className="text-lg font-semibold mb-2">{section}</h3>
-                  <textarea
-                    className="input mb-2"
-                    rows={3}
-                    placeholder="Add notes, access instructions, or login details."
-                    value={legalDocs[section]?.notes || ''}
-                    onChange={(e) => handleLegalTextChange(section, e.target.value)}
-                  />
-                  <input
-                    type="file"
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                    className="input"
-                    onChange={(e) => handleLegalFileChange(section, e.target.files[0])}
-                  />
-                  {legalDocs[section]?.file && (
-                    <p className="text-sm text-green-700 mt-1">Uploaded: {legalDocs[section].file.name}</p>
-                  )}
-                </div>
-              ))}
             </div>
           </div>
         )}
