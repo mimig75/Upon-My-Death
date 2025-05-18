@@ -40,11 +40,14 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen p-8 font-sans bg-offwhite text-charcoal max-w-5xl mx-auto">
-      <img
-        src="/upon-my-death-logo.png"
-        alt="Upon My Death logo"
-        className="w-40 mb-6"
-      />
+      <div className="flex flex-col items-center mb-8">
+        <img
+          src="/upon-my-death-logo.png"
+          alt="Upon My Death logo"
+          className="w-28 sm:w-36 md:w-44 lg:w-52 mb-2"
+        />
+        <p className="text-charcoal text-lg font-medium">Upon My Death</p>
+      </div>
 
       <h1 className="text-4xl font-semibold mb-4">Upon My Death</h1>
       <p className="text-lg mb-10">
